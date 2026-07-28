@@ -246,6 +246,17 @@ Implemented validations include:
 
 ---
 
+## 🗄 Database Design
+
+The following ERD represents the complete database design of the project.
+
+> **Note:** Version 1 currently implements Roles, Users, Trains, Stations, and Schedules. The remaining entities are planned for future development.
+
+![Database ERD](docs/images/database_train_ticket_api-erd_v1.png)
+
+---
+
+
 ## 🚀 Roadmap
 
 ### Version 2
