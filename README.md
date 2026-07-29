@@ -314,9 +314,8 @@ http://localhost:8080
 API can be tested using:
 
 - Postman
-- cURL
 
-Postman Collection will be provided in the `/postman` directory.
+Postman Collection will be provided in the `/Postman` directory.
 
 ---
 
