@@ -2095,7 +2095,7 @@
                       "",
                       "// Data Validation",
                       "pm.test(\"Email or Password validation message is correct\", function () {",
-                      "    pm.expect(response.email)",
+                      "    pm.expect(response.message)",
                       "        .to.eql(\"Invalid email or password\");",
                       "});",
                       "",
@@ -2116,14 +2116,7 @@
               ],
               "request": {
                 "auth": {
-                  "type": "bearer",
-                  "bearer": [
-                    {
-                      "key": "token",
-                      "value": "{{adminToken}}",
-                      "type": "string"
-                    }
-                  ]
+                  "type": "noauth"
                 },
                 "method": "POST",
                 "header": [],
@@ -11968,14 +11961,14 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/api/trains/12",
+                  "raw": "{{baseUrl}}/api/schedules/120000",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "api",
-                    "trains",
-                    "12"
+                    "schedules",
+                    "120000"
                   ]
                 }
               },
@@ -12041,14 +12034,14 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/api/schedules/12",
+                  "raw": "{{baseUrl}}/api/schedules/1210000",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "api",
                     "schedules",
-                    "12"
+                    "1210000"
                   ]
                 }
               },
@@ -12400,7 +12393,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": 5,\n    \"originStationId\": 1,\n    \"destinationStationId\": 4,\n    \"departureTime\": \" 2026-11-07T08:00:00\",\n    \"arrivalTime\": \" 2026-11-07T10:30:00\",\n    \"price\": 250000\n}",
+                  "raw": "{\n    \"trainId\": 5,\n    \"originStationId\": 1,\n    \"destinationStationId\": 2,\n    \"departureTime\": \"2027-11-07T06:00:00\",\n    \"arrivalTime\": \"2027-11-07T10:30:00\",\n    \"price\": 250000\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -13520,7 +13513,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"20\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-11-08T09:00:00\",\n    \"arrivalTime\": \"2026-11-08T10:00:00\",\n    \"price\":\"1200000\"\n}",
+                  "raw": "{\n    \"trainId\": \"1\",\n    \"originStationId\":\"20777777777\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-11-08T09:00:00\",\n    \"arrivalTime\": \"2026-11-08T10:00:00\",\n    \"price\":\"1200000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -13593,7 +13586,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"30\",\n    \"departureTime\": \"2026-11-08T09:00:00\",\n    \"arrivalTime\": \"2026-11-08T10:00:00\",\n    \"price\":\"1200000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3000000000\",\n    \"departureTime\": \"2027-11-08T09:00:00\",\n    \"arrivalTime\": \"2027-11-08T10:00:00\",\n    \"price\":\"1200000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -13614,7 +13607,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-POST-018 CREATE Schedules - Error - Price should be more than zero",
+              "name": "TC-SCH-POST-018 CREATE Schedules - Error - Price should be more than zero (Negative value)",
               "event": [
                 {
                   "listen": "test",
@@ -13664,7 +13657,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-11-08T09:00:00\",\n    \"arrivalTime\": \"2026-11-08T10:00:00\",\n    \"price\":\"0\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-11-08T09:00:00\",\n    \"arrivalTime\": \"2026-11-08T10:00:00\",\n    \"price\":\"-1\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -13685,7 +13678,78 @@
               "response": []
             },
             {
-              "name": "TC-SCH-POST-019 CREATE Schedules - Error - Price contains chars",
+              "name": "TC-SCH-POST-019 CREATE Schedules - Error - Price should be more than zero (Equals to 0)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Status Code",
+                      "pm.test(\"Status code is 400\", function () {",
+                      "    pm.response.to.have.status(400);",
+                      "});",
+                      "",
+                      "// Parse Response",
+                      "const response = pm.response.json();",
+                      "",
+                      "// Response Structure",
+                      "pm.test(\"Response contains price field\", function () {",
+                      "    pm.expect(response).to.have.property(\"price\");",
+                      "});",
+                      "",
+                      "// Data Validation",
+                      "pm.test(\"price validation message is correct\", function () {",
+                      "    pm.expect(response.price).to.eql(\"Price must be greater than 0\");",
+                      "});",
+                      "",
+                      "// Performance",
+                      "pm.test(\"Response time is less than 1000 ms\", function () {",
+                      "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{adminToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-11-08T09:00:00\",\n    \"arrivalTime\": \"2027-11-08T10:00:00\",\n    \"price\":\"0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/schedules",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "schedules"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-SCH-POST-020 CREATE Schedules - Error - Price contains chars",
               "event": [
                 {
                   "listen": "test",
@@ -13735,7 +13799,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"5\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-08T09:00:00\",\n    \"arrivalTime\": \"2026-07-08T10:00:00\",\n    \"price\":\"abc\"\n}",
+                  "raw": "{\n    \"trainId\": \"5\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-08T09:00:00\",\n    \"arrivalTime\": \"2027-07-08T10:00:00\",\n    \"price\":\"abc\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -13756,7 +13820,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-POST-020 CREATE Schedules - Error - Price contains special chars",
+              "name": "TC-SCH-POST-021 CREATE Schedules - Error - Price contains special chars",
               "event": [
                 {
                   "listen": "test",
@@ -13806,7 +13870,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"5\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-08T09:00:00\",\n    \"arrivalTime\": \"2026-07-08T10:00:00\",\n    \"price\":\"175@000\"\n}",
+                  "raw": "{\n    \"trainId\": \"5\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-08T09:00:00\",\n    \"arrivalTime\": \"2027-07-08T10:00:00\",\n    \"price\":\"175@000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -13827,7 +13891,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-POST-021 CREATE Schedules - Error - Price contains internal spaces",
+              "name": "TC-SCH-POST-022 CREATE Schedules - Error - Price contains internal spaces",
               "event": [
                 {
                   "listen": "test",
@@ -13877,7 +13941,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"4\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-09T09:00:00\",\n    \"arrivalTime\": \"2026-07-09T10:00:00\",\n    \"price\":\"175 000\"\n}",
+                  "raw": "{\n    \"trainId\": \"4\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-09T09:00:00\",\n    \"arrivalTime\": \"2027-07-09T10:00:00\",\n    \"price\":\"175 000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -13898,7 +13962,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-POST-022 CREATE Schedules - Error - Invalid Price thousand separator",
+              "name": "TC-SCH-POST-023 CREATE Schedules - Error - Invalid Price thousand separator",
               "event": [
                 {
                   "listen": "test",
@@ -13948,7 +14012,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"4\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-09T09:00:00\",\n    \"arrivalTime\": \"2026-07-09T10:00:00\",\n    \"price\":\"175,00\"\n}",
+                  "raw": "{\n    \"trainId\": \"4\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-09T09:00:00\",\n    \"arrivalTime\": \"2027-07-09T10:00:00\",\n    \"price\":\"175,000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -13969,7 +14033,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-POST-023 CREATE Schedules - Error - Invalid Departure Time format",
+              "name": "TC-SCH-POST-024 CREATE Schedules - Error - Invalid Departure Time format",
               "event": [
                 {
                   "listen": "test",
@@ -14020,7 +14084,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"4\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-1-09 09:00:00\",\n    \"arrivalTime\": \"2026-11-09T10:00:00\",\n    \"price\":\"175000\"\n}",
+                  "raw": "{\n    \"trainId\": \"4\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-11-09 09:00:00\",\n    \"arrivalTime\": \"2026-11-09T10:00:00\",\n    \"price\":\"175000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -14041,7 +14105,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-POST-024 CREATE Schedules - Error - Invalid Arrival Time format",
+              "name": "TC-SCH-POST-025 CREATE Schedules - Error - Invalid Arrival Time format",
               "event": [
                 {
                   "listen": "test",
@@ -14112,7 +14176,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-POST-025 CREATE Schedules - Unauthorized Access - Without Token",
+              "name": "TC-SCH-POST-026 CREATE Schedules - Unauthorized Access - Without Token",
               "event": [
                 {
                   "listen": "test",
@@ -14183,7 +14247,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-POST-026 CREATE Schedules - Unauthorized Access - Invalid Token",
+              "name": "TC-SCH-POST-027 CREATE Schedules - Unauthorized Access - Invalid Token",
               "event": [
                 {
                   "listen": "test",
@@ -14254,7 +14318,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-POST-027 CREATE Schedules - Unauthorized Access - Expired Token",
+              "name": "TC-SCH-POST-028 CREATE Schedules - Unauthorized Access - Expired Token",
               "event": [
                 {
                   "listen": "test",
@@ -14459,7 +14523,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": 5,\n    \"originStationId\": 1,\n    \"destinationStationId\": 2,\n    \"departureTime\": \"2026-11-07T06:00:00\",\n    \"arrivalTime\": \"2026-11-07T10:30:00\",\n    \"price\": 250000\n}",
+                  "raw": "{\n    \"trainId\": 5,\n    \"originStationId\": 1,\n    \"destinationStationId\": 2,\n    \"departureTime\": \"2027-11-07T06:00:00\",\n    \"arrivalTime\": \"2027-11-07T10:30:00\",\n    \"price\": 250000\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -14725,7 +14789,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-08T08:00:00\",\n    \"arrivalTime\": \"2026-07-08T09:00:00\",\n    \"price\":\"150000\"\n}",
+                  "raw": "{\n    \"trainId\": \"\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-08T08:00:00\",\n    \"arrivalTime\": \"2027-07-08T09:00:00\",\n    \"price\":\"150000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -14797,7 +14861,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-08T08:00:00\",\n    \"arrivalTime\": \"2026-07-08T09:00:00\",\n    \"price\":\"150000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-08T08:00:00\",\n    \"arrivalTime\": \"2027-07-08T09:00:00\",\n    \"price\":\"150000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -14869,7 +14933,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"\",\n    \"departureTime\": \"2026-07-08T08:00:00\",\n    \"arrivalTime\": \"2026-07-08T09:00:00\",\n    \"price\":\"150000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"\",\n    \"departureTime\": \"2027-07-08T08:00:00\",\n    \"arrivalTime\": \"2027-07-08T09:00:00\",\n    \"price\":\"150000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -14941,7 +15005,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"\",\n    \"arrivalTime\": \"2026-07-08T09:00:00\",\n    \"price\":\"150000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"\",\n    \"arrivalTime\": \"2027-07-08T09:00:00\",\n    \"price\":\"150000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15013,7 +15077,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-08T09:00:00\",\n    \"arrivalTime\": \"\",\n    \"price\":\"150000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-08T09:00:00\",\n    \"arrivalTime\": \"\",\n    \"price\":\"150000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15085,7 +15149,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-08T09:00:00\",\n    \"arrivalTime\": \"2026-07-08T10:00:00\",\n    \"price\":\"\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-08T09:00:00\",\n    \"arrivalTime\": \"2027-07-08T10:00:00\",\n    \"price\":\"\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15157,7 +15221,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"2\",\n    \"departureTime\": \"2026-11-09T09:00:00\",\n    \"arrivalTime\": \"2026-11-09T10:00:00\",\n    \"price\":\"1000000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"2\",\n    \"departureTime\": \"2027-11-09T09:00:00\",\n    \"arrivalTime\": \"2027-11-09T10:00:00\",\n    \"price\":\"1000000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15229,7 +15293,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"2\",\n    \"departureTime\": \"2026-11-08T09:00:00\",\n    \"arrivalTime\": \"2026-11-08T08:00:00\",\n    \"price\":\"1000000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-11-08T09:00:00\",\n    \"arrivalTime\": \"2027-11-08T08:00:00\",\n    \"price\":\"1000000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15373,7 +15437,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-11-08T09:00:00\",\n    \"arrivalTime\": \"2026-11-08T09:00:00\",\n    \"price\":\"1000000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-11-08T09:00:00\",\n    \"arrivalTime\": \"2027-11-08T09:00:00\",\n    \"price\":\"1000000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15445,7 +15509,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": 5,\n    \"originStationId\": 1,\n    \"destinationStationId\": 2,\n    \"departureTime\": \"2026-11-07T06:00:00\",\n    \"arrivalTime\": \"2026-11-07T10:30:00\",\n    \"price\": 250000\n}",
+                  "raw": "{\n    \"trainId\": 5,\n    \"originStationId\": 2,\n    \"destinationStationId\": 4,\n    \"departureTime\": \"2027-11-07T06:00:00\",\n    \"arrivalTime\": \"2027-11-07T10:30:00\",\n    \"price\": 250000\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15453,14 +15517,14 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/api/schedules/2",
+                  "raw": "{{baseUrl}}/api/schedules/100",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "api",
                     "schedules",
-                    "2"
+                    "100"
                   ]
                 },
                 "description": "A schedule is considered duplicate when another schedule already exists with the same combination of trainId, originStationId, destinationStationId, and departureTime. The current schedule itself is excluded from duplicate checking during an update."
@@ -15520,7 +15584,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"100\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-08T09:00:00\",\n    \"arrivalTime\": \"2026-07-08T10:00:00\",\n    \"price\":\"1500000\"\n}",
+                  "raw": "{\n    \"trainId\": \"100999999\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-08T09:00:00\",\n    \"arrivalTime\": \"2027-07-08T10:00:00\",\n    \"price\":\"1500000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15594,7 +15658,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"20\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-08T09:00:00\",\n    \"arrivalTime\": \"2026-07-08T10:00:00\",\n    \"price\":\"1200000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"209900000\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-11-08T09:00:00\",\n    \"arrivalTime\": \"2027-11-08T10:00:00\",\n    \"price\":\"1200000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15668,7 +15732,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"30\",\n    \"departureTime\": \"2026-07-08T09:00:00\",\n    \"arrivalTime\": \"2026-07-08T10:00:00\",\n    \"price\":\"1200000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3111110\",\n    \"departureTime\": \"2027-07-08T09:00:00\",\n    \"arrivalTime\": \"2027-07-08T10:00:00\",\n    \"price\":\"1200000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15742,7 +15806,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"30\",\n    \"departureTime\": \"2026-07-08T09:00:00\",\n    \"arrivalTime\": \"2026-07-08T10:00:00\",\n    \"price\":\"1200000\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"30\",\n    \"departureTime\": \"2027-07-08T09:00:00\",\n    \"arrivalTime\": \"2027-07-08T10:00:00\",\n    \"price\":\"1200000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15750,21 +15814,21 @@
                   }
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/api/schedules/99",
+                  "raw": "{{baseUrl}}/api/schedules/999999",
                   "host": [
                     "{{baseUrl}}"
                   ],
                   "path": [
                     "api",
                     "schedules",
-                    "99"
+                    "999999"
                   ]
                 }
               },
               "response": []
             },
             {
-              "name": "TC-SCH-PUT-019 UPDATE Schedules - Error - Price should be more than zero",
+              "name": "TC-SCH-PUT-019 UPDATE Schedules - Error - Price should be more than zero (Negative value)",
               "event": [
                 {
                   "listen": "test",
@@ -15814,7 +15878,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-11-08T09:00:00\",\n    \"arrivalTime\": \"2026-11-08T10:00:00\",\n    \"price\":\"0\"\n}",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-11-08T09:00:00\",\n    \"arrivalTime\": \"2027-11-08T10:00:00\",\n    \"price\":\"-1\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15836,7 +15900,79 @@
               "response": []
             },
             {
-              "name": "TC-SCH-PUT-020 UPDATE Schedules - Error - Price contains chars",
+              "name": "TC-SCH-PUT-020 UPDATE Schedules - Error - Price should be more than zero (Equals to 0)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "// Status Code",
+                      "pm.test(\"Status code is 400\", function () {",
+                      "    pm.response.to.have.status(400);",
+                      "});",
+                      "",
+                      "// Parse Response",
+                      "const response = pm.response.json();",
+                      "",
+                      "// Response Structure",
+                      "pm.test(\"Response contains price field\", function () {",
+                      "    pm.expect(response).to.have.property(\"price\");",
+                      "});",
+                      "",
+                      "// Data Validation",
+                      "pm.test(\"price validation message is correct\", function () {",
+                      "    pm.expect(response.price).to.eql(\"Price must be greater than 0\");",
+                      "});",
+                      "",
+                      "// Performance",
+                      "pm.test(\"Response time is less than 1000 ms\", function () {",
+                      "    pm.expect(pm.response.responseTime).to.be.below(1000);",
+                      "});"
+                    ],
+                    "type": "text/javascript",
+                    "packages": {},
+                    "requests": {}
+                  }
+                }
+              ],
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{adminToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"trainId\": \"6\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-11-08T09:00:00\",\n    \"arrivalTime\": \"2027-11-08T10:00:00\",\n    \"price\":\"0\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/schedules/1",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "schedules",
+                    "1"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "TC-SCH-PUT-021 UPDATE Schedules - Error - Price contains chars",
               "event": [
                 {
                   "listen": "test",
@@ -15886,7 +16022,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"5\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-08T09:00:00\",\n    \"arrivalTime\": \"2026-07-08T10:00:00\",\n    \"price\":\"abc\"\n}",
+                  "raw": "{\n    \"trainId\": \"5\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-08T09:00:00\",\n    \"arrivalTime\": \"2027-07-08T10:00:00\",\n    \"price\":\"abc\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -15908,7 +16044,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-PUT-021 UPDATE Schedules - Error - Price contains special chars",
+              "name": "TC-SCH-PUT-022 UPDATE Schedules - Error - Price contains special chars",
               "event": [
                 {
                   "listen": "test",
@@ -15980,7 +16116,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-PUT-022 UPDATE Schedules - Error - Price contains internal spaces",
+              "name": "TC-SCH-PUT-023 UPDATE Schedules - Error - Price contains internal spaces",
               "event": [
                 {
                   "listen": "test",
@@ -16030,7 +16166,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"4\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-09T09:00:00\",\n    \"arrivalTime\": \"2026-07-09T10:00:00\",\n    \"price\":\"175 000\"\n}",
+                  "raw": "{\n    \"trainId\": \"4\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-11-09T09:00:00\",\n    \"arrivalTime\": \"2026-11-09T10:00:00\",\n    \"price\":\"175 000\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -16052,7 +16188,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-PUT-023 UPDATE Schedules - Error - Invalid Price thousand separator",
+              "name": "TC-SCH-PUT-024 UPDATE Schedules - Error - Invalid Price thousand separator",
               "event": [
                 {
                   "listen": "test",
@@ -16102,7 +16238,7 @@
                 "header": [],
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"trainId\": \"4\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2026-07-09T09:00:00\",\n    \"arrivalTime\": \"2026-07-09T10:00:00\",\n    \"price\":\"175,00\"\n}",
+                  "raw": "{\n    \"trainId\": \"4\",\n    \"originStationId\":\"2\" ,\n    \"destinationStationId\": \"3\",\n    \"departureTime\": \"2027-07-09T09:00:00\",\n    \"arrivalTime\": \"2027-07-09T10:00:00\",\n    \"price\":\"175,00\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -16124,7 +16260,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-PUT-024 UPDATE Schedules - Error - Invalid Departure Time format",
+              "name": "TC-SCH-PUT-025 UPDATE Schedules - Error - Invalid Departure Time format",
               "event": [
                 {
                   "listen": "test",
@@ -16197,7 +16333,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-PUT-025 UPDATE Schedules - Error - Invalid Arrival Time format",
+              "name": "TC-SCH-PUT-026 UPDATE Schedules - Error - Invalid Arrival Time format",
               "event": [
                 {
                   "listen": "test",
@@ -16269,7 +16405,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-PUT-026 UPDATE Schedules - Unauthorized Access - Without Token",
+              "name": "TC-SCH-PUT-027 UPDATE Schedules - Unauthorized Access - Without Token",
               "event": [
                 {
                   "listen": "test",
@@ -16341,7 +16477,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-PUT-027 UPDATE Schedules - Unauthorized Access - Invalid Token",
+              "name": "TC-SCH-PUT-028 UPDATE Schedules - Unauthorized Access - Invalid Token",
               "event": [
                 {
                   "listen": "test",
@@ -16413,7 +16549,7 @@
               "response": []
             },
             {
-              "name": "TC-SCH-PUT-028 UPDATE Schedules - Unauthorized Access - Expired Token",
+              "name": "TC-SCH-PUT-029 UPDATE Schedules - Unauthorized Access - Expired Token",
               "event": [
                 {
                   "listen": "test",

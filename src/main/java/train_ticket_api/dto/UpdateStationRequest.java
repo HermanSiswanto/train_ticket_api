@@ -12,10 +12,7 @@ public class UpdateStationRequest {
 
     @NotBlank(message = "Station code is required")
     @Size(max = 10, message = "Station code must not exceed 10 characters")
-    @Pattern(
-            regexp = "^$|^[A-Za-z]+$",
-            message = "Station code may only contain letters without spaces"
-    )
+    @Pattern(regexp = "^$|^[A-Za-z]+$", message = "Station code may only contain letters without spaces")
     private String stationCode;
 
     @NotBlank(message = "Station name is required")

@@ -85,6 +85,7 @@ src
     ├── security
     ├── exception
     └── config
+└── resources
 ```
 
 ---
