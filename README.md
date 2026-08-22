@@ -326,11 +326,7 @@ The project is designed as a System Under Test (SUT) for API automation.
 
 Upcoming implementations:
 
-- Postman Collection
-- Pytest API Automation
-- HTML Test Report
 - GitHub Actions CI/CD
-- API Test Documentation
 
 ---
 
